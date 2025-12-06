@@ -1,11 +1,34 @@
-# Core Agent Framework
+# =============================================================================
+# FinResearch AI - Dependencies
+# =============================================================================
+# This file contains all dependencies needed for the various framework demos.
+# Install with: pip install -r requirements.txt
+
+# -----------------------------------------------------------------------------
+# CORE AGENT FRAMEWORKS
+# -----------------------------------------------------------------------------
+# CrewAI - Multi-agent orchestration framework (used in original demos)
 crewai==0.80.0
-langchain_openai
 
-# Tools & APIs
-yfinance              # For stock data
-duckduckgo-search     # Free search tool (good for demos vs. paid Tavily)
-python-dotenv         # For managing API keys
+# OpenAI SDK - Direct API access with function calling & Assistants API
+openai>=1.40.0
 
-# Utilities
-ipykernel             # If you want to run this in notebooks later
+# LangChain Ecosystem - Modular agent framework
+langchain>=0.2.0
+langchain_openai>=0.1.0
+langchain_community>=0.2.0
+langgraph>=0.2.0          # For advanced stateful multi-agent workflows
+
+# -----------------------------------------------------------------------------
+# FINANCIAL DATA & TOOLS
+# -----------------------------------------------------------------------------
+yfinance                  # Yahoo Finance API wrapper (free, no key required)
+duckduckgo-search         # Free search tool (good for demos vs. paid Tavily)
+
+# -----------------------------------------------------------------------------
+# UTILITIES
+# -----------------------------------------------------------------------------
+python-dotenv             # For managing API keys securely via .env files
+pydantic>=2.0.0          # For structured outputs and data validation
+rich                      # Beautiful terminal output for demos
+ipykernel                 # Jupyter notebook support
