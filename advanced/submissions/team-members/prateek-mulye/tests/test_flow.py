@@ -54,20 +54,20 @@ def test_flow(ticker="MSFT"):
         
         print(f"- [Source: {source}] Text snippet: {doc.page_content[:100]}...")
         
-        if source == "tavily_search":
+        if source == "researcher_agent_summary" or source == "tavily_search":
             found_news = True
-        if source == "yfinance":
+        if source == "analyst_agent" or source == "yfinance":
             found_financials = True
             
     if found_news:
-        print("✅ Found News Documents (Tavily)")
+        print("✅ Found News/Summary Documents")
     else:
-        print("⚠️ No News Documents found in top 5 results. Check indexing.")
+        print("⚠️ No News/Summary Documents found in top 5 results.")
         
     if found_financials:
-        print("✅ Found Financial Documents (YFinance)")
+        print("✅ Found Financial Analysis Documents")
     else:
-        print("⚠️ No Financial Documents found in top 5 results. Check indexing.")
+        print("⚠️ No Financial Analysis Documents found in top 5 results.")
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser()
