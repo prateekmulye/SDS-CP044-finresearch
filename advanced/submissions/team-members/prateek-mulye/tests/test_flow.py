@@ -21,24 +21,29 @@ def test_flow(ticker="MSFT"):
         "messages": [],
         "research_summary": "",
         "financial_data": {},
+        "final_report": "",
         "next_step": ""
     }
     
     print("Invoking Graph...")
-    # Using invoke instead of stream for test simplicity, but loop is fine
+    # Invoke runs until end
     final_output = app.invoke(initial_state)
     
     print("\n--- Graph Execution Completed ---")
     
-    # 2. Verify Pinecone Content
+    # 2. Verify Report
+    report = final_output.get("final_report", "")
+    if report and len(report) > 100:
+        print("✅ Final Report Generated Successfully")
+        print(f"Report length: {len(report)} chars")
+    else:
+        print("❌ Final Report MISSING or too short")
+        
+    # 3. Verify Pinecone Content (Still good to check)
     memory = VectorMemory()
     print("\nVerifying Pinecone Content...")
     
-    # Search for any documents related to the ticker
-    # We can try a specific query to see if data retrieval works
     query = f"financial info for {ticker}"
-    
-    # Test Similarity Search
     results = memory.similarity_search(query, k=5)
     
     found_news = False
@@ -48,11 +53,8 @@ def test_flow(ticker="MSFT"):
     for doc in results:
         meta = doc.metadata
         source = meta.get("source", "unknown")
-        # Check metadata match (heuristic, since search is semantic)
-        # Note: metadata values might be lists or strings depending on ingestion
-        doc_ticker = meta.get("ticker", "")
         
-        print(f"- [Source: {source}] Text snippet: {doc.page_content[:100]}...")
+        print(f"- [Source: {source}] Text snippet: {doc.page_content[:50]}...")
         
         if source == "researcher_agent_summary" or source == "tavily_search":
             found_news = True

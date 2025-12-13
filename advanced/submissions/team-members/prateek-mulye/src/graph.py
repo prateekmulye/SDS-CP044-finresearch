@@ -3,31 +3,31 @@ from .state import AgentState
 from .agents.manager import manager_node
 from .agents.researcher import researcher_node
 from .agents.analyst import analyst_node
+from .agents.reporter import reporter_node
 
 def create_graph():
-    """
-    Construct the FinResearch AI Multi-Agent Graph.
-    Week 1 Flow: Manager -> Researcher -> Analyst -> END
-    """
     workflow = StateGraph(AgentState)
 
     # 1. Add Nodes
     workflow.add_node("manager", manager_node)
     workflow.add_node("researcher", researcher_node)
     workflow.add_node("analyst", analyst_node)
+    workflow.add_node("reporter", reporter_node)
 
     # 2. Add Edges
-    # Start at Manager
+    # Entry point is Manager
     workflow.set_entry_point("manager")
-    
-    # Manager -> Researcher
+
+    # Manager triggers BOTH Researcher and Analyst (Parallel Fan-Out)
     workflow.add_edge("manager", "researcher")
-    
-    # Researcher -> Analyst
-    workflow.add_edge("researcher", "analyst")
-    
-    # Analyst -> END
-    workflow.add_edge("analyst", END)
+    workflow.add_edge("manager", "analyst")
+
+    # Both Researcher and Analyst go to Reporter (Fan-In/Sync)
+    workflow.add_edge("researcher", "reporter")
+    workflow.add_edge("analyst", "reporter")
+
+    # Reporter is the final step
+    workflow.add_edge("reporter", END)
 
     # 3. Compile
     app = workflow.compile()

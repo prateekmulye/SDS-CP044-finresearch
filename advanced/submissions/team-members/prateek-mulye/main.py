@@ -26,12 +26,29 @@ def main():
     }
     
     # Run the graph
+    print(f"--- Starting Financial Research for {ticker} ---")
+    final_state = {}
     for output in app.stream(initial_state):
         for key, value in output.items():
             print(f"Finished Node: {key}")
-            # print(f"Output: {value}") # Verbose logging if needed
-            
-    print("\n--- Workflow Completed ---")
+            # The streaming output contains the state update from that node
+            # We want to capture the accumulated state, which isn't directly returned in simple stream mode
+            # But the value returned IS the update. 
+            # Ideally we'd use app.invoke for a single final result, but stream gives us progress.
+            # For simplicity in this demo, let's just use the last output chunk's update 
+            # assuming the reporter is the last one and returns 'final_report'
+            if "final_report" in value:
+                final_state.update(value)
+
+    print("--- Graph Execution Completed ---")
+    
+    # Print Final Report
+    final_report = final_state.get("final_report", "No report generated. check logs.")
+    print("\n" + "="*50)
+    print(f"FINAL REPORT FOR {ticker}")
+    print("="*50 + "\n")
+    print(final_report)
+    print("\n" + "="*50)
 
 if __name__ == "__main__":
     main()
