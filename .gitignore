@@ -68,7 +68,6 @@ dmypy.json
 
 # VS Code
 .vscode/
-.kiro/
 
 # IDEs
 .idea/

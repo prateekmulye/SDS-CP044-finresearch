@@ -17,6 +17,7 @@ pydantic = "*"
 python-dotenv = "*"
 pytest = "*"
 pytest-asyncio = "*"
+gradio = "*"
 
 [dev-packages]
 

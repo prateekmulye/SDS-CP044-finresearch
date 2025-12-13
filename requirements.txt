@@ -20,6 +20,7 @@ langchain_community>=0.2.0
 langgraph>=0.2.0          # For advanced stateful multi-agent workflows
 langchain-pinecone        # For Vector Memory
 langchain-tavily          # For Search
+gradio                    # For Web UI
 
 # -----------------------------------------------------------------------------
 # FINANCIAL DATA & TOOLS

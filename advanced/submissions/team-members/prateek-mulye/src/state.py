@@ -11,4 +11,5 @@ class AgentState(TypedDict):
     research_summary: str
     financial_data: dict
     final_report: str
+    investor_mode: str
     next_step: str

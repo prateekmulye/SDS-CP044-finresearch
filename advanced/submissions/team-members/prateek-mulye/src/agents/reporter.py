@@ -27,15 +27,21 @@ class ReportingAgent:
             source = doc.metadata.get("source", "unknown")
             context_text += f"-- Source: {source} --\n{doc.page_content}\n\n"
             
-        # 2. Generate Report using LLM
-        print("Generating final report...")
         
-        system_prompt = """You are a professional financial reporter. 
-        Your goal is to write a comprehensive financial report for {ticker} based on the provided gathered context.
+        mode = state.get("investor_mode", "Neutral")
+        print(f"Generating final report in '{mode}' mode...")
+        
+        system_prompt = f"""You are a professional financial reporter. 
+        Your goal is to write a comprehensive financial report for {{ticker}} based on the provided gathered context.
+        
+        **TONE INSTRUCTION**: The user has requested a **{mode}** perspective. 
+        - If 'Bullish': Highlight growth potential, strengths, and upside opportunities.
+        - If 'Bearish': Focus on risks, valuation concerns, and competitive threats.
+        - If 'Neutral': Maintain a balanced, objective view.
         
         The report must follow this exact Markdown structure:
         
-        # Financial Report: {ticker}
+        # Financial Report: {{ticker}}
         
         ## 1. Executive Summary
         (A concise 150-word overview of the company's current status and outlook)
@@ -53,7 +59,7 @@ class ReportingAgent:
         (Bull case vs Bear case)
         
         ## 6. Final Perspective
-        (A neutral concluding statement)
+        (A concluding statement reflecting the {mode} view)
         
         If some information is missing in the context, state that it was not available.
         Do not make up numbers.
