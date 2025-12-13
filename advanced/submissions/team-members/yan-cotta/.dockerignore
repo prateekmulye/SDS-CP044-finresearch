@@ -1,0 +1,74 @@
+# =============================================================================
+# Docker Ignore File for FinResearch AI
+# =============================================================================
+
+# Git
+.git
+.gitignore
+.github
+
+# Python
+__pycache__
+*.py[cod]
+*$py.class
+*.so
+.Python
+*.egg
+*.egg-info
+dist
+build
+eggs
+parts
+bin
+var
+sdist
+develop-eggs
+.installed.cfg
+lib
+lib64
+
+# Virtual environments
+.venv
+venv
+ENV
+env
+
+# IDE
+.idea
+.vscode
+*.swp
+*.swo
+*~
+
+# Testing
+.pytest_cache
+.coverage
+htmlcov
+.tox
+.nox
+
+# Documentation
+docs
+*.md
+!README.md
+
+# Local development
+.env
+.env.local
+.env.*.local
+
+# ChromaDB local storage (will be created at runtime)
+.chroma_db
+
+# Reports (mounted as volume)
+reports
+
+# Misc
+*.log
+*.bak
+.DS_Store
+Thumbs.db
+
+# Poetry lock (we export to requirements.txt in build)
+# Uncomment if you want deterministic builds:
+# poetry.lock

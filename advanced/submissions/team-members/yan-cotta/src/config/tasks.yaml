@@ -1,0 +1,105 @@
+# FinResearch AI - Task Configuration
+# This file defines the task templates for the research workflow.
+
+# Task for the Researcher Agent
+research_task:
+  description: >
+    Conduct comprehensive qualitative research on {ticker} ({company_name}).
+    
+    Your objectives:
+    1. Search for recent news articles (past 2 weeks) about the company
+    2. Identify any earnings announcements, guidance updates, or financial disclosures
+    3. Find information about product launches, partnerships, or strategic initiatives
+    4. Gather analyst opinions, rating changes, or price target updates
+    5. Assess overall market sentiment (bullish/bearish/neutral)
+    
+    Requirements:
+    - Verify all sources before including them
+    - Clearly distinguish between facts, opinions, and speculation
+    - Include publication dates for all news items
+    - Save key findings to memory for team reference
+  expected_output: >
+    A structured research brief containing:
+    - Executive Summary (3-5 sentences)
+    - Recent News (bulleted list with source and date)
+    - Key Developments (significant events or announcements)
+    - Sentiment Analysis (market perception with supporting evidence)
+    - Risk Factors (any negative news or concerns identified)
+  agent: researcher
+
+# Task for the Analyst Agent
+analysis_task:
+  description: >
+    Perform quantitative financial analysis for {ticker} ({company_name}).
+    
+    Your objectives:
+    1. Retrieve current stock price and recent price movements
+    2. Gather key valuation metrics (P/E, P/B, EV/EBITDA, PEG ratio)
+    3. Collect fundamental data (market cap, revenue, earnings, margins)
+    4. Analyze 52-week price range and current position within it
+    5. Compare metrics to industry averages where possible
+    
+    Requirements:
+    - Report exact figures with appropriate decimal precision
+    - Explicitly state when data is unavailable
+    - Contextualize metrics (e.g., "P/E of 25 is above sector median of 18")
+    - Save key metrics to memory for team reference
+  expected_output: >
+    A structured financial data package containing:
+    - Price Summary (current price, change, 52-week position)
+    - Valuation Metrics (P/E, P/B, PEG with interpretation)
+    - Fundamental Data (market cap, revenue, margins)
+    - Technical Context (volume, beta, volatility indicators)
+    - Data Quality Notes (any metrics that could not be retrieved)
+  agent: analyst
+
+# Task for the Reporter Agent
+report_task:
+  description: >
+    Create a comprehensive investment research report for {ticker} ({company_name}).
+    
+    Your objectives:
+    1. Retrieve findings from team memory (research and analysis results)
+    2. Synthesize qualitative research with quantitative analysis
+    3. Structure the report in a professional, readable format
+    4. Provide a balanced assessment of opportunities and risks
+    5. Format the report in clean Markdown for easy distribution
+    
+    Requirements:
+    - Use proper financial terminology
+    - Balance depth with readability
+    - Include all key data points from the analysis
+    - Add appropriate investment disclaimers
+    - Structure with clear sections and hierarchy
+  expected_output: >
+    A professional Markdown investment report containing:
+    - Title and metadata (company, ticker, date)
+    - Executive Summary
+    - Company Overview
+    - Recent Developments (from research)
+    - Financial Analysis (from analyst)
+    - Investment Considerations (bull/bear case)
+    - Risk Factors
+    - Disclaimer
+  agent: reporter
+
+# Manager coordination task
+coordination_task:
+  description: >
+    Coordinate the research process for {ticker} ({company_name}).
+    
+    Workflow:
+    1. Delegate qualitative research to the Researcher
+    2. Delegate quantitative analysis to the Analyst
+    3. Ensure both teams save findings to shared memory
+    4. Delegate final report synthesis to the Reporter
+    5. Review and approve the final deliverable
+    
+    Quality Standards:
+    - Verify all tasks are completed before proceeding
+    - Ensure data consistency across research and analysis
+    - Confirm final report incorporates all key findings
+  expected_output: >
+    Confirmation that all research phases are complete and the final 
+    investment report has been generated and saved.
+  agent: manager
