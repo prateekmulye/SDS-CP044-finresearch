@@ -102,6 +102,10 @@ class ReportingAgent:
         else:
             report_content = full_output
         
+        # Add Humorous Watermark
+        watermark = "\n\n---\n*Dashboard certified: 100% Organic Alpha. Strictly Non-Advisory. Jerome Powell was not consulted during this research.* 🕵️‍♂️📈"
+        report_content += watermark
+        
         return {
             "final_report": report_content,
             "financial_data": graph_data,

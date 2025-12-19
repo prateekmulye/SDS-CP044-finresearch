@@ -25,6 +25,42 @@ response_cache = {}
 # Rate Limit: {client_ip: {"count": int, "window_start": timestamp, "blocked_until": timestamp}}
 rate_limit_db = {}
 
+# --- Funny Loading Experience ---
+FUNNY_PHRASES = [
+    "Jerome Powell is typing... stay calm...",
+    "Convincing the algorithms to ignore the volatility...",
+    "Mining for 'hopium' in the technical indicators...",
+    "Teaching the bear to share its lunch with the bull...",
+    "Simulating a soft landing (it's bumpy)...",
+    "Asking the magic 8-ball about the P/E ratio...",
+    "Hiding your portfolio from the margin callers...",
+    "Calibrating the 'Moon' trajectory...",
+    "Scanning the blockchain for missing 'Alpha'...",
+    "Polishing the crystal ball for the analyst node..."
+]
+
+PULSE_CSS = """
+@keyframes pulse {
+    0% { opacity: 0.6; }
+    50% { opacity: 1; }
+    100% { opacity: 0.6; }
+}
+.pulse-text {
+    animation: pulse 2s infinite ease-in-out;
+    color: #ff9800;
+    font-weight: bold;
+    font-style: italic;
+    font-family: 'Roboto Mono', monospace;
+    text-align: center;
+    padding: 10px;
+}
+"""
+
+def get_funny_loading_html():
+    import random
+    phrase = random.choice(FUNNY_PHRASES)
+    return f'<div class="pulse-text">🚀 {phrase}</div>'
+
 def get_client_ip(request: gr.Request):
     if request:
         return request.client.host
@@ -301,7 +337,7 @@ def run_research(ticker, mode, request: gr.Request):
     )
 
 # --- UI Layout ---
-with gr.Blocks(title="FinResearch AI", theme=gr.themes.Soft(), css="footer {visibility: hidden}") as demo:
+with gr.Blocks(title="FinResearch AI", theme=gr.themes.Soft(), css=PULSE_CSS + " footer {visibility: hidden}") as demo:
     gr.HTML("""
     <div style="background-color: #f0ad4e; color: white; display: flex; align-items: center; justify-content: center; padding: 10px; font-weight: bold; font-family: sans-serif; width: 100%; border-bottom: 2px solid #eea236;">
         <span style="font-size: 20px; margin-right: 10px;">⚠️</span>
@@ -322,6 +358,9 @@ with gr.Blocks(title="FinResearch AI", theme=gr.themes.Soft(), css="footer {visi
                     label="Investor Persona"
                 )
                 submit_btn = gr.Button("🚀 Run Research", variant="primary")
+                
+                # Funny Loading Status
+                loading_display = gr.HTML(visible=True)
             
             gr.Markdown("### 📥 Downloads")
             with gr.Row():
@@ -356,13 +395,20 @@ with gr.Blocks(title="FinResearch AI", theme=gr.themes.Soft(), css="footer {visi
                 with gr.TabItem("📄 Full Report"):
                     report_output = gr.Markdown()    
 
+    # Event Chaining for Funny Loading Experience
     submit_btn.click(
+        fn=get_funny_loading_html,
+        outputs=loading_display
+    ).then(
         fn=run_research,
         inputs=[ticker_input, mode_input],
         outputs=[
             report_output, summary_output, snapshot_output, news_output, risks_output,
             md_file, json_file, viz_plot, metrics_table, verdict_display
         ]
+    ).then(
+        fn=lambda: "", # Clear loading message after completion
+        outputs=loading_display
     )
 
 if __name__ == "__main__":

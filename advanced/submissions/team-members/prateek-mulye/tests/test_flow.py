@@ -36,6 +36,8 @@ def test_flow(ticker="MSFT"):
     if report and len(report) > 100:
         print("✅ Final Report Generated Successfully")
         print(f"Report length: {len(report)} chars")
+        print("\n--- Report Tail (Watermark Check) ---")
+        print(report[-300:])
     else:
         print("❌ Final Report MISSING or too short")
         
